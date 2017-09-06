@@ -4,7 +4,7 @@ import R from 'ramda'
 
 import Users from '../models/users.js'
 import { checkAuth } from '../middlewares/authMiddleware.js'
-import { redisInstance } from '../models/db.js'
+// import { redisInstance } from '../models/db.js'
 import { getToken, unAuthorizeUser } from '../utils/helpers.js'
 
 const router = Router()

@@ -1,11 +1,10 @@
 import { Router } from 'express'
 
-import postController from './posts.js'
-import authController from './auth.js'
+// import authController from './auth.js'
 
 const router = Router()
 
-router.use('/auth', authController)
-router.use('/posts', postController)
+// router.use('/auth', authController)
 
 export default router
+ 

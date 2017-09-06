@@ -1,7 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
-import session from 'express-session'
+// import session from 'express-session'
 import morgan from 'morgan'
 
 import controller from "./controllers"
@@ -10,7 +10,7 @@ const app = express()
 
 app.use(morgan('dev'))
 app.set('secret', process.env.SECRET)
-app.use(session({ secret: process.env.SECRET }))
+// app.use(session({ secret: process.env.SECRET }))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cookieParser())
