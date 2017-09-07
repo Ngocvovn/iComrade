@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <button id="book">Book</button>
+    <h2 id="number"></h2>
+    <button id="done">Done</button>
+    <button id="cancel">Cancel</button>
+    <button id="create">Create room</button>
+
+    <script>
+      $(function () {
+        var socket = io();
+        console.log("done");
+        $('#book').click(function(){
+          socket.emit('BOOK_ROOM', "toilet");
+        });
+
+        $('#create').click(function(){
+          socket.emit('CREATE_ROOM', "toilet");
+        });
+
+        // $('#remove').click(function(){
+
+        //   socket.emit('createRoom', name);
+        // });
+
+        socket.on('BOOK_ROOM', function(number){
+          $('#number').text(number);
+        });
+
+        $('#done').click(function(){
+          socket.emit('FINISH_ROOM', "toilet");
+        });
+
+        $('#cancel').click(function(){
+          socket.emit('CANCEL_ROOM', "toilet");
+        });
+        socket.on('FINISH_ROOM', function(){
+          let number = Number($('#number').text())
+          if (number > 1) {
+            number--;
+            $('#number').text(number);
+          } else {
+            $('#number').text("Done");
+          }
+        });
+
+        socket.on('CANCEL_ROOM', function(){
+          $('#number').text('');
+        });
+      });
+    </script>
+  </body>
+</html>

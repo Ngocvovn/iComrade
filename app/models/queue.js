@@ -11,6 +11,10 @@ export default class Resources {
     return _instance;
   }
 
+  getAllResources() {
+    return this.resources
+  }
+
   addRoom(roomID) {
   	this.resources[roomID] = this.resources[roomID] || [];
   }
@@ -19,21 +23,32 @@ export default class Resources {
   	this.resources = R.omit([roomID], this.resources);
   }
 
-  addMemberToRoom(roomID, memberID) {
+  getRoom(roomID) {
+    return this.resources[roomID]
+  }
+
+  addMemberToRoom(roomID, newMember) {
   	this.addRoom(roomID);
-  	const room = this.resources[roomID];
-  	const existID = R.find(R.equals(roomID), room);
+  	const members = this.resources[roomID];
+  	const existID = R.find(member => member.id === newMember.id, members);
   	if (!!existID) {
   		console.warn("This member already exist");
   		return false;
   	}
-  	this.resources[roomID].push(memberID);
+  	this.resources[roomID].push(newMember);
   	return true
   }
 
-  removeMemberFromRoom(roomID, memberID) {
+  removeMemberFromRoom(roomID, RemovedMember) {
   	if (!this.resources[roomID]) return; 	
-  	this.resources[roomID] = R.filter(id => id !== memberID , this.resources[roomID]);
+  	this.resources[roomID] = R.filter(member => member.id !== RemovedMember.id , this.resources[roomID]);
+  }
+
+  getMembersAfterSpecificMember(roomID, canceledMember) {
+    const position = this.resources[roomID]
+                      .map(({id}) => id)
+                      .indexOf(canceledMember.id);
+    return this.resources[roomID].filter((_, index) => index > position);
   }
 
   
