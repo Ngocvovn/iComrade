@@ -40,7 +40,7 @@ export default class Resources {
   }
 
   removeMemberFromRoom(roomID, RemovedMember) {
-  	if (!this.resources[roomID]) return; 	
+  	if (!this.resources[roomID]) return;
   	this.resources[roomID] = R.filter(member => member.id !== RemovedMember.id , this.resources[roomID]);
   }
 
@@ -51,5 +51,9 @@ export default class Resources {
     return this.resources[roomID].filter((_, index) => index > position);
   }
 
-  
+  getAllRoomStatus() {
+    return R.keys(this.resources).reduce((obj, key) => Object.assign(obj, { [key]: this.resources[key].length }), {});
+  }
+
+
 }

@@ -12,6 +12,7 @@
     <button id="done">Done</button>
     <button id="cancel">Cancel</button>
     <button id="create">Create room</button>
+    <p id="data"></p>
 
     <script>
       $(function () {
@@ -50,6 +51,10 @@
             $('#number').text("Done");
           }
         });
+
+        socket.on('UPDATE_ROOM_INFO', function(data) {
+          console.log(data)
+        })
 
         socket.on('CANCEL_ROOM', function(){
           $('#number').text('');
