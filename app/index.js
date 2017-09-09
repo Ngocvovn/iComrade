@@ -7,6 +7,7 @@ import http from 'http'
 
 import controller from "./controllers"
 import { mainHandler } from './socket'
+import { checkAuthSocket } from './middlewares/authMiddleware'
 
 const app = express()
 const httpWrapper = http.Server(app)
@@ -32,7 +33,9 @@ app.use(function(err, req, res, next) {
 
 let queue = [];
 
+io.use(checkAuthSocket);
 io.on('connection', mainHandler(io));
+
 
 
 app.use('/public', express.static(__dirname + '/views/'))

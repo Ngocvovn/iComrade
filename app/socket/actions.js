@@ -1,3 +1,4 @@
+export const GET_ROOM = "GET_ROOM"
 export const CREATE_ROOM = "CREATE_ROOM"
 export const REMOVE_ROOM = "REMOVE_ROOM"
 export const BOOK_ROOM = "BOOK_ROOM"

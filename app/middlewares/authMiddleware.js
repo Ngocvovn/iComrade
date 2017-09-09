@@ -24,6 +24,25 @@ export const checkAuth = (req, res, next) => {
   })
 }
 
+export const checkAuthSocket = (socket, next) => {
+  const token = socket.request._query.token
+  if (!token) {
+    return ;
+  }
+
+  jwt.verify(token, process.env.SECRET, function(err, decoded) {
+    console.log(err);
+    if (err) {
+      return ;
+    } else {
+      socket.currentUser = decoded
+      console.log(decoded);
+      next();
+    }
+  })
+
+}
+
 export const checkAdmin = (req, res, next) => {
   if (req.currentUser && req.currentUser.role === "ROLE_ADMIN") {
     return next()

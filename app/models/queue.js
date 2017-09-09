@@ -1,11 +1,18 @@
 import R from 'ramda';
 
+import Rooms from './rooms'
+
 let _instance = null;
+let roomNames = ["Toilet", "Bathroom"];
 export default class Resources {
   constructor() {
     if (!_instance) {
       _instance = this;
       this.resources = {};
+      this.addRoom = this.addRoom.bind(this)
+
+      Rooms.getAll()
+        .then(rooms => rooms.forEach(room => this.resources[room.name] = []))
     }
 
     return _instance;
@@ -15,12 +22,28 @@ export default class Resources {
     return this.resources
   }
 
-  addRoom(roomID) {
-  	this.resources[roomID] = this.resources[roomID] || [];
+  addRoom(name, description = '') {
+    return new Promise((resolve, reject) => {
+      const newRoom = new Rooms({ name, description})
+      newRoom.save((err) => {
+        if (err) reject(err);
+        this.resources[name] = this.resources[name] || [];
+        resolve("Added")
+      })
+    })   
   }
 
-  removeRoom(roomID) {
-  	this.resources = R.omit([roomID], this.resources);
+  removeRoom(name) {
+    return new Promise((resolve, reject) => {
+      Rooms.findOneAndRemove({ name }, (err) => {
+        if (err) {
+          reject(err)
+          return;
+        }
+        this.resources = R.omit([name], this.resources);
+        resolve("Done")
+      })
+    })   
   }
 
   getRoom(roomID) {
@@ -28,7 +51,6 @@ export default class Resources {
   }
 
   addMemberToRoom(roomID, newMember) {
-  	this.addRoom(roomID);
   	const members = this.resources[roomID];
   	const existID = R.find(member => member.id === newMember.id, members);
   	if (!!existID) {

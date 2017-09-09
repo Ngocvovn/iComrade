@@ -25,7 +25,7 @@ router.post('/login', async(req, res, next) => {
 
     const token = jwt.sign(refinedUser, req.app.get('secret'), { expiresIn: '30m' })
 
-    res.setHeader('x-access-token', token)
+    res.setHeader('Authorization', token)
     return res.json(refinedUser)
 
   } catch (err) {
