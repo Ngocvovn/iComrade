@@ -31,14 +31,14 @@ export function mainHandler(io) {
 	  socket.on(BOOK_ROOM, function(roomName){
 	  	resources.addMemberToRoom(roomName, socket)
 	  	socket.join(roomName);
-	    socket.emit(BOOK_ROOM, resources.getRoom(roomName).length-1);
+	    socket.emit(BOOK_ROOM, {roomName, queueNumber: resources.getRoom(roomName).length-1});
 			updateAllRoomStatus();
 
 	  });
 
 	  socket.on(FINISH_ROOM, function(roomName){
 	  	resources.removeMemberFromRoom(roomName, socket)
-	    io.to(roomName).emit(FINISH_ROOM, roomName);
+	    io.to(roomName).emit(FINISH_ROOM, {roomName});
 			updateAllRoomStatus();
 	  });
 
@@ -46,9 +46,9 @@ export function mainHandler(io) {
 	  	const affectedMembers = resources.getMembersAfterSpecificMember(roomName, socket)
 	  	resources.removeMemberFromRoom(roomName, socket)
 	  	for (const member of affectedMembers) {
-	  		member.emit(FINISH_ROOM, roomName)
+	  		member.emit(FINISH_ROOM, {roomName})
 	  	}
-	    socket.emit(CANCEL_ROOM, {})
+	    socket.emit(CANCEL_ROOM, {roomName})
 			updateAllRoomStatus();
 	  });
 
