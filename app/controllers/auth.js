@@ -4,7 +4,7 @@ import R from 'ramda'
 
 import Users from '../models/users.js'
 import { checkAuth } from '../middlewares/authMiddleware.js'
-// import { redisInstance } from '../models/db.js'
+import { redisInstance } from '../models/db.js'
 import { getToken, unAuthorizeUser } from '../utils/helpers.js'
 
 const router = Router()
@@ -25,7 +25,7 @@ router.post('/login', async(req, res, next) => {
 
     const token = jwt.sign(refinedUser, req.app.get('secret'), { expiresIn: '30m' })
 
-    res.setHeader('Authorization', token)
+    res.setHeader('x-access-token', token)
     return res.json(refinedUser)
 
   } catch (err) {
@@ -64,7 +64,7 @@ router.get('/logout', (req, res) => {
   const token = getToken(req)
   redisInstance.sadd(['logOutTokens', token], (err, reply) => {
     if (err) throw err
-    return unAuthorizeUser(res)
+    return res.json({message: 'LOG_OUT'})
   })
 })
 
