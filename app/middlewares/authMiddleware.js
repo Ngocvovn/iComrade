@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
+
 import { redisInstance } from '../models/db.js'
 import { unAuthorizeUser } from '../utils/helpers.js'
+import { SECRET } from '../config/config'
 
 export const checkAuth = (req, res, next) => {
   const token = req.headers['x-access-token']
@@ -30,8 +32,7 @@ export const checkAuthSocket = (socket, next) => {
     return ;
   }
 
-  jwt.verify(token, process.env.SECRET, function(err, decoded) {
-    console.log(err);
+  jwt.verify(token, SECRET, function(err, decoded) {
     if (err) {
       return ;
     } else {
