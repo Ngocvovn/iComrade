@@ -24,9 +24,17 @@ app.set('views', __dirname + '/views');
 
 app.use('/api', controller)
 
+
+//////////// React routes /////////////
 app.get('/', (req, res) => {
 	res.render('index')
 })
+
+app.get('/dashboard', (req, res) => {
+	res.render('index')
+})
+
+///////////////////////////////////////
 
 app.use(function(err, req, res, next) {
   console.log("Error happens ", err.stack);
