@@ -8,13 +8,14 @@ import http from 'http'
 import controller from "./controllers"
 import { mainHandler } from './socket'
 import { checkAuthSocket } from './middlewares/authMiddleware'
+import { SECRET } from './config/config'
 
 const app = express()
 const httpWrapper = http.Server(app)
 const io = ioWrapper(httpWrapper)
 
 app.use(morgan('dev'))
-app.set('secret', process.env.SECRET)
+app.set('secret', SECRET)
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cookieParser())
@@ -23,9 +24,17 @@ app.set('views', __dirname + '/views');
 
 app.use('/api', controller)
 
+
+//////////// React routes /////////////
 app.get('/', (req, res) => {
 	res.render('index')
 })
+
+app.get('/dashboard', (req, res) => {
+	res.render('index')
+})
+
+///////////////////////////////////////
 
 app.use(function(err, req, res, next) {
   console.log("Error happens ", err.stack);

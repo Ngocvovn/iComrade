@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import redis from 'redis'
 
-import { DATABASE_URL } from '../config/config.js'
+import { DATABASE_URL, REDIS_URL, REDIS_PORT, REDIS_PASSWORD } from '../config/config.js'
 
 mongoose.connect(DATABASE_URL)
 const db = mongoose.connection
@@ -12,6 +12,6 @@ db.once('open', (callback) => {
 })
 
 
-export const redisInstance = redis.createClient();
+export const redisInstance = redis.createClient({ host: REDIS_URL, port: REDIS_PORT, password: REDIS_PASSWORD});
 
 export default db
