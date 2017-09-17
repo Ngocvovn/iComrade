@@ -14,7 +14,7 @@ export function mainHandler(io) {
 		}
 
 		socket.on(GET_ROOM, function(){
-			console.log(socket.currentUser);
+			// console.log(socket.currentUser);
 			updateAllRoomStatus();
 	  });
 
