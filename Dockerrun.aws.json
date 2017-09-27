@@ -1,7 +1,7 @@
 {
     "AWSEBDockerrunVersion": "1",
     "Image": {
-      "Name": "883793968399.dkr.ecr.eu-central-1.amazonaws.com/test:<TAG>",
+      "Name": "$AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/test:<TAG>",
       "Update": "true"
     },
     "Ports": [
