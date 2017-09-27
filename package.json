@@ -6,6 +6,7 @@
   "scripts": {
     "build": "webpack",
     "start": "nodemon app/index.js --exec babel-node",
+    "run-prod": "node build/index.js",
     "test": "jest"
   },
   "author": "",

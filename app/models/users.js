@@ -8,10 +8,10 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, default: 'ROLE_USER' },
   created_at: { type: Date, default: Date.now }
-})
+});
 
 userSchema.pre('save', function(next) {
-  var user = this;
+  const user = this;
   bcrypt.hash(user.password, null, null, function(err, hash) {
     if (err) {
       next();
@@ -19,13 +19,13 @@ userSchema.pre('save', function(next) {
     user.password = hash;
     next();
   });
-})
+});
 
 userSchema.methods.comparePassword = function(candidatePassword) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-      if (err) reject(err)
-      resolve(isMatch)
+      if (err) reject(err);
+      resolve(isMatch);
     })
   })
 
