@@ -9,6 +9,5 @@ COPY package.json /app
 RUN npm install
 
 COPY . /app
-# ENTRYPOINT ["/sbin/tini", "--"]
 
 CMD ["npm", "start"]
