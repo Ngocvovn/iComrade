@@ -10,7 +10,9 @@ if [[ ( "$TRAVIS_BRANCH" == "development" ) || ( "$TRAVIS_BRANCH" == "master" ) 
 		TAG="iComrade-$TRAVIS_BUILD_NUMBER"
 		ENV="$ENV_NAME"
 	fi
-	sed -i='' "s/<TAG>/$TAG/" $AWS_EB
+	sed -i='' "s/<AWS_ACCOUNT_ID>/$AWS_ACCOUNT_ID/" $AWS_EB
+    sed -i='' "s/<REGION>/$REGION/" $AWS_EB
+    sed -i='' "s/<TAG>/$TAG/" $AWS_EB
 	zip -r $TAG $AWS_EB
 	aws s3 cp $TAG.zip s3://$S3_BUCKET/$TAG.zip
 	sudo docker tag test:$TRAVIS_BUILD_NUMBER $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/test:"$TAG"
