@@ -1,14 +1,25 @@
 language: node_js
 node_js:
 - 7.7.3
-script: 
+sudo: required
+script:
 - yarn build
 before_install:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
+- pip install --user awscli
+- pip install --upgrade --user awsebcli
+- export PATH=$PATH:$HOME/.local/bin
 before_script:
 - yarn install
 services:
 - docker
 after_success:
-- sudo docker build .
+- sudo docker build -t test:$TRAVIS_BUILD_NUMBER .
+- eval $(aws ecr get-login --region eu-central-1)
+- chmod +x scripts/deploy.sh
+- scripts/deploy.sh
+env:
+  global:
+  - secure: pwpzG615HGpLHr3ccNyWxLOV7zUZOBv7bdmmg3Qz3a9Mx5hLtmXhKkkCyJhgBEiPytzCMzoT/KOXhTiFDBzc26HX4KxgM8sl1s1HZQr5ZmDwzRVuqQLsj7oNuN+iXBPCQEDagcYSPNODk5SUcPGhRZEYbyjSUx89hU2bLmEE7gwHoe9YOnD7+QV2GCL8PjUn8aC9TyNd+9ohdl0GIk5l7w5JIRNFYN/501n9s31EI6POl6VGac9eC5p2SCKgAFEHTDFA8ctzNe+omlI/l/l7JfwF2UfOVa3yrimg6FHsGkH3Z1zHiz0DtdST8jeup2ZP6vuzPNrZ5wsRG49eBLVzFN87XESWWF9gdJ3aNHKNilfB6BSW6EkPWcwNBo5mk47taEq2tAgDyqg7iIFXWpIdUAEoANyLewnQMzIFeCZIgCYeIJZ8F82YWHwMSvOIOkKoJyhbrSgYVBIOxBjs6+26uQXoAyp+udd46HljhN7F7sdN0RRJmZw9rUOxgKW4qZIVxlnno2JDtFDo4TmfFuMVv1rFe7mSd4s0UdSqKqkuu084TQALqbHSkGVTpaaFeOqEMUdED+5W9DT7hIqKHDefAlF5dNnjUGMqI62HK0VZdmQSeabooJ4Z/QkvnLcqsyhfSO0QwfbICWtKbRpPzsSLDSVShMOvfUwj9c4KfXRSWuk=
+  - secure: MQUi0BzEDyswGnQzdp2/J36j8gGKoajL0qt7Q7vlD71bhwmUTaEVp6PytcYX9to6kRbu9VwvhI5q85+58+EXLShQK2KXjUL8L8t+n1YR/8CQpgLm7fJewtfW/qcU9QWD7fzNWl+XFdua78GCKgdtlnVa9bTarJMqd99SxxJbiDVxBFG3FHJopJoAiS4HyIvJdCCG91QzPpj6n0JxVNem740do3ywNsTQy09vXt/53nPG2UB0apyc5Qy++4Cj0GkPjDQXvmR8UR87DkpVjb/A2rmXNTAvmlDbuDjeJiaT7NRlRv6i47St+6tU4Q55vbX8eeviNVyp0GXCc8Zx8yv+oicGEQFAJtBXUBQkA34/a2DncQv16JtmDyPspqmCBuGqyKAqiItu3jAEtYzHX8iY6s39vaP0Wr3Iw0Vfi1PTgLDCJbK5p1l8PfOPEWUeByJkUUCSLbNVkiyf1xhoeql5363INX1VkayTz8kVxuj2RefBBcZ6k+vsHJtJ1U7JdTDoMRnbIAXHeScai+ThcDGwDrcs15H2TPvLw4waSMKKgworDCltgpHtnB9cUY3YZm6obcq4AukGOehjDLM1UCfcpAEHjQJYDj7FgWZzewVxEj6wH4fyQ+uAsl/N3pXqyPBcMUBa8+tyzZIaxiLsaLh+LYlQWlMEgUnK2je1N6+ayvQ=
