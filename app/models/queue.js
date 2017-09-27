@@ -1,18 +1,24 @@
 import R from 'ramda';
 
-import Rooms from './rooms'
-
 let _instance = null;
-let roomNames = ["Toilet", "Bathroom"];
+
+/**
+ * Queue resources single ton class that store data about resources, and users
+ */
 export default class Resources {
-  constructor() {
+  constructor(Rooms) {
     if (!_instance) {
       _instance = this;
-      this.resources = {};
-      this.addRoom = this.addRoom.bind(this)
 
-      Rooms.getAll()
+      // Data object in shape of  { roomID: [connectionID]}
+      this.resources = {};
+  
+      this.Rooms = Rooms;
+
+      this.Rooms.getAll()
         .then(rooms => rooms.forEach(room => this.resources[room.name] = []))
+
+      this.addRoom = this.addRoom.bind(this)
     }
 
     return _instance;
@@ -24,7 +30,7 @@ export default class Resources {
 
   addRoom(name, description = '') {
     return new Promise((resolve, reject) => {
-      const newRoom = new Rooms({ name, description})
+      const newRoom = new this.Rooms({ name, description})
       newRoom.save((err) => {
         if (err) reject(err);
         this.resources[name] = this.resources[name] || [];
@@ -35,7 +41,7 @@ export default class Resources {
 
   removeRoom(name) {
     return new Promise((resolve, reject) => {
-      Rooms.findOneAndRemove({ name }, (err) => {
+      this.Rooms.findOneAndRemove({ name }, (err) => {
         if (err) {
           reject(err)
           return;
@@ -51,6 +57,9 @@ export default class Resources {
   }
 
   addMemberToRoom(roomID, newMember) {
+    if (!this.resources[roomID]) {
+      this.resources[roomID] = []
+    }
   	const members = this.resources[roomID];
   	const existID = R.find(member => member.id === newMember.id, members);
   	if (!!existID) {

@@ -5,9 +5,9 @@ import db from './db.js'
 const roomSchema = mongoose.Schema({
   "name": { type: String, unique: true },
   "description": String
-})
+});
 
-const model = mongoose.model('Room', roomSchema)
+const model = mongoose.model('Room', roomSchema);
 
 model.getAll = function() {
   return new Promise((resolve, reject) => {
@@ -15,10 +15,9 @@ model.getAll = function() {
       if (err) {
         reject(err);
       }
-
       resolve(rooms);
     })
   })
-}
+};
 
 export default model
