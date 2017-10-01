@@ -3,6 +3,7 @@ node_js:
 - 7.7.3
 sudo: required
 script:
+- mkdir -p /build/views
 - cp -r app/views build/views
 - yarn build
 before_install:
