@@ -2,9 +2,9 @@ import Resources from "../models/queue";
 import Rooms from "../models/rooms";
 import { CREATE_ROOM, REMOVE_ROOM, BOOK_ROOM,
 				FINISH_ROOM, CANCEL_ROOM, UPDATE_ROOM_INFO, GET_ROOM } from './actions'
+import { checkAdmin } from '../middlewares/authMiddleware'
 
 const resources  = new Resources(Rooms);
-const allSockets = [];
 
 export function mainHandler(io) {
 	return socket => {
@@ -16,15 +16,19 @@ export function mainHandler(io) {
 			updateAllRoomStatus();
 	  });
 
-	  socket.on(CREATE_ROOM, roomName => {
-	  	resources.addRoom(roomName)
-	  		.then(updateAllRoomStatus);
-	  });
+	  socket.on(CREATE_ROOM, roomName => checkAdmin(socket)(
+	  	_ => {
+		  	resources.addRoom(roomName)
+		  		.then(updateAllRoomStatus);
+		  }
+	  ));
 
-	  socket.on(REMOVE_ROOM, roomName => {
-	  	resources.removeRoom(roomName)
-	  		.then(updateAllRoomStatus);
-	  });
+	  socket.on(REMOVE_ROOM, roomName => checkAdmin(socket)(
+	  	_ => {
+		  	resources.removeRoom(roomName)
+		  		.then(updateAllRoomStatus);
+		  }
+	  ));
 
 	  socket.on(BOOK_ROOM, roomName => {
 	  	resources.addMemberToRoom(roomName, socket);
