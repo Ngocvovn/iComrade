@@ -3,6 +3,7 @@ node_js:
 - 7.7.3
 sudo: required
 script:
+- cp -r app/views build/views
 - yarn test
 before_install:
 - export DISPLAY=:99.0
