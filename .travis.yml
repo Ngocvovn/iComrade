@@ -3,7 +3,7 @@ node_js:
 - 7.7.3
 sudo: required
 script:
-- yarn build
+- yarn test
 before_install:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
@@ -15,6 +15,7 @@ before_script:
 services:
 - docker
 after_success:
+- yarn build
 - sudo docker build -t test:$TRAVIS_BUILD_NUMBER .
 - eval $(aws ecr get-login --region eu-central-1)
 - chmod +x scripts/deploy.sh
