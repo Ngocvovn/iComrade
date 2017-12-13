@@ -42,9 +42,9 @@ export const checkAuthSocket = (socket, next) => {
   })
 }
 
-export const checkAdmin = (req, res, next) => {
-  if (req.currentUser && req.currentUser.role === "ROLE_ADMIN") {
-    return next()
+export const checkAdmin = socket => callback => {
+  if (socket.currentUser && socket.currentUser.role === "ROLE_ADMIN") {
+    return callback()
   }
-  return res.status(403).json({ message: 'Forbidden' })
+  return f => f;
 }
