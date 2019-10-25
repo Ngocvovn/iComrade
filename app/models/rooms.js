@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
 
-import db from './db.js'
 
 const roomSchema = mongoose.Schema({
   "name": { type: String, unique: true },
@@ -9,7 +8,7 @@ const roomSchema = mongoose.Schema({
 
 const model = mongoose.model('Room', roomSchema);
 
-model.getAll = function() {
+model.getAll = function () {
   return new Promise((resolve, reject) => {
     this.find({}, (err, rooms) => {
       if (err) {
