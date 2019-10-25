@@ -1,4 +1,4 @@
-FROM node:6.11.3-alpine
+FROM node:latest
 
 EXPOSE 8000
 
