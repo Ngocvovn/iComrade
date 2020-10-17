@@ -36,11 +36,9 @@ app.get('/dashboard', (req, res) => {
 
 ///////////////////////////////////////
 
-app.use(function(err, req, res, next) {
+app.use(function(err) {
   console.log("Error happens ", err.stack);
 });
-
-let queue = [];
 
 io.use(checkAuthSocket);
 io.on('connection', mainHandler(io));
