@@ -5,7 +5,7 @@ import Resources from '../queue.js';
 class RoomMock {
   constructor({ name, description}) {
     this.name = name;
-    this.description = this.description;
+    this.description = description;
   }
 
   save(callback) {

@@ -7,7 +7,7 @@ mongoose.connect(DATABASE_URL)
 const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'connection error:'))
-db.once('open', (callback) => {
+db.once('open', () => {
   console.log('db connected')
 })
 
