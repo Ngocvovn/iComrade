@@ -44,7 +44,7 @@ router.post('/signup', async(req, res, next) => {
 
     const newUser = new Users({ username, password })
 
-    newUser.save((err) => {
+    newUser.save(err => {
       if (err) res.send(err)
       res.json({ 'message': 'Account created!' })
     })
@@ -54,9 +54,7 @@ router.post('/signup', async(req, res, next) => {
 
 })
 
-router.get('/currentUser', checkAuth, (req, res, next) => {
-  res.json(req.currentUser)
-})
+router.get('/currentUser', checkAuth, (req, res, next) => res.json(req.currentUser))
 
 
 router.get('/logout', (req, res) => {
